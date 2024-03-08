@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-bank-configmap
+data:
+  port-api-clients: 8080
+  port-api-transactions: 8081

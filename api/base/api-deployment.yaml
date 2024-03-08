@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api-deployment
+  name: api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-deployment
+  template:
+    metadata:
+      labels:
+        app: api-deployment
+    spec:
+      containers:
+        - image: ## IMAGE FOR API 1
+          name: api-clients
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api-bank-configmap
+                  key: port-api-clients
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+        - image: ## IMAGE FOR API 2
+          name: api-transactions
+          ports:
+            - containerPort: 8081
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api-bank-configmap
+                  key: port-api-transactions
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 500m
