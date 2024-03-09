@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: front
+  name: front-bff
+spec:
+  template:
+    spec:
+      containers:
+        - name: front
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom: any
+                configMapKeyRef:
+                  name: game-demo           
+                  key: player_initial_lives 
+        - name: front-bff
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: any

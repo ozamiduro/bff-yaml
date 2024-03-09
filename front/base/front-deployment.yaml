@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: front-deployment
+  name: front-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-deployment
+  template:
+    metadata:
+      labels:
+        app: front-deployment
+    spec:
+      containers:
+        - image: ## IMAGE FOR API 1
+          name: front
+          ports:
+            - containerPort: 8080
+          env:
+            - name: REACT_APP_BFF
+              valueFrom:
+                configMapKeyRef:
+                  name: front-configmap
+                  key: react-app-bff
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+        - image: ## IMAGE FOR API 2
+          name: api-bff
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BFF_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: front-configmap
+                  key: port-bff
+            - name: FRONT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: front-configmap
+                  key: url-front
+            - name: API_CLIENT
+              valueFrom:
+                configMapKeyRef:
+                  name: front-configmap
+                  key: api-clients
+            - name: API_TRANSACTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: front-configmap
+                  key: api-transactions
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 500m

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-service
+spec:
+  selector:
+    app: front-service
+  ports:
+    - port: 80 # Es el portero
+      name: front
+      targetPort: 8080 # Port Api 1
+      protocol: TCP
+    - port: 81 # Es el portero
+      name: api-bff
+      targetPort: 8080 # Port Api 2
+      protocol: TCP
+  type: LoadBalancer
